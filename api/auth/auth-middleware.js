@@ -9,10 +9,11 @@ const Users = require('../users/users-model.js');
   }
 */
 function restricted(req, res, next) {
-  // if (!req.session.user) {
-  //   next({ status: 401, message: 'You shall not pass!' });
-  // }
-  next();
+  if (!req.session.user) {
+    next({ status: 401, message: 'You shall not pass!' });
+  } else {
+    next();
+  }
 }
 
 /*
@@ -28,7 +29,7 @@ async function checkUsernameFree(req, res, next) {
 
   try {
     const existingUser = await Users.findBy({ username: username });
-    if (existingUser) {
+    if (existingUser.length !== 0) {
       next({ status: 422, message: 'Username taken' });
     } else {
       next();
@@ -51,9 +52,10 @@ async function checkUsernameExists(req, res, next) {
 
   try {
     const existingUser = await Users.findBy({ username: username });
-    if (!existingUser) {
+    if (existingUser.length === 0) {
       next({ status: 401, message: 'Invalid credentials' });
     } else {
+      req.user = existingUser;
       next();
     }
   } catch (err) {
