@@ -3,7 +3,7 @@
 const express = require('express');
 const router = express.Router();
 
-
+const { checkUsernameFree, checkUsernameExists, checkPasswordLength } = require('./auth-middleware.js');
 
 /**
   1 [POST] /api/auth/register { "username": "sue", "password": "1234" }

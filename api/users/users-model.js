@@ -4,7 +4,7 @@ const db = require('../../data/db-config.js');
   resolves to an ARRAY with all users, each user having { user_id, username }
  */
 function find() {
-  return db('users').select('id', 'username');
+  return db('users').select('user_id', 'username');
 }
 
 /**
@@ -27,9 +27,9 @@ function findById(user_id) {
   resolves to the newly inserted user { user_id, username }
  */
 async function add(user) {
-  const [id] = await db('users').insert(user);
+  const [user_id] = await db('users').insert(user);
 
-  return findById(id);
+  return findById(user_id);
 }
 
 // Don't forget to add these to the `exports` object so they can be required in other modules
